@@ -18,25 +18,25 @@ void solve() {
 
     cin >> n >> t >> m;
     cin >> s >> e;
-    vector<vector<int>> dist(3, vector<int>(n+1, mx));
+    vector<vector<int>> dist(2, vector<int>(n+1, mx));
     dist[0][s] = 0;
     for (int i = 0; i < t; i++) {
-        dist[(i + 1) % 3] = vector<int>(n + 1, mx);
+        //dist[(i + 1) % 2] = vector<int>(n + 1, mx);
         for (int j = 0; j < m; j++) {
             cin >> a >> b >> w;
 
-            dist[(i+1)%3][b] = min(dist[i%3][a] + w, dist[(i+1)%3][b]);
-            dist[(i+1)%3][a] = min(dist[i%3][b] + w, dist[(i+1)%3][a]);
+            dist[(i+1)%2][b] = min(dist[i%2][a] + w, dist[(i+1)%2][b]);
+            dist[(i+1)%2][a] = min(dist[i%2][b] + w, dist[(i+1)%2][a]);
             //cout << dist[i + 1][b]  << "\n";
         }
         for (int j = 0; j < n; j++) {
-            dist[(i+1)%3][j] = min(dist[(i+1)%3][j], dist[i%3][j]);
+            dist[(i+1)%2][j] = min(dist[(i+1)%2][j], dist[i%2][j]);
         }
         
     }
 
-    if (dist[t%3][e] == mx) dist[t%3][e] = -1;
-    cout << dist[t%3][e];
+    if (dist[t%2][e] == mx) dist[t%2][e] = -1;
+    cout << dist[t%2][e];
 }
 
 int main() {
