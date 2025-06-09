@@ -16,23 +16,19 @@ using pid = pair<double, double>;
 
 void solve() {
     int n, m;
-    string str;
-    string target = "";
+    char c;
 
     cin >> n >> m;
-    cin >> str;
 
-    for (int i = 0; i < 2 * n + 1; i++) {
-        target = target + (i % 2 == 0 ? 'I' : 'O');
-    }
     int j = 0, res = 0;
     for (int i = 0; i < m; i++) {
-        if (str[i] == (j % 2 == 0 ? 'I' : 'O')) {
+        cin >> c;
+        if (c == (j % 2 == 0 ? 'I' : 'O')) {
             j++;
         }
         else {
             j = 0;
-            if (str[i] == 'I') j = 1;
+            if (c == 'I') j = 1;
         }
         if (j == 2 * n + 1) {
             j -= 2;
