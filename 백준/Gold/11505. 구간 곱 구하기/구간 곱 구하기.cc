@@ -60,7 +60,7 @@ void solve() {
         cin >> a;
         arr.push_back(a);
     }
-    st.resize(4*n);
+    st.resize(1 << ((int)ceil(log2(n))+1));
     make_st(1LL, 0, n-1);
 
     for (int i = 0; i < m + k; i++) {
