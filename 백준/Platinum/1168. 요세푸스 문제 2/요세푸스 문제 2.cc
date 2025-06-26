@@ -35,7 +35,7 @@ void update(int x, int n) {
     st[node]++;
 }
 
-int find_and_delete(int left, int x, int start, int end, int node) {
+int find_and_delete(int x, int start, int end, int node) {
     int ret;
 
     //cout << "in: " << left << " " << x << " "<< st[node*2] << " " << start << " " << end << "\n";
@@ -44,11 +44,11 @@ int find_and_delete(int left, int x, int start, int end, int node) {
         return end;
     }
     int mid = (start + end) / 2;
-    
+
     if (st[node * 2] >= x)
-        ret = find_and_delete(left, x, start, mid, node * 2);
-    else 
-        ret = find_and_delete(left, x - st[node * 2], mid + 1, end, node * 2 + 1);
+        ret = find_and_delete(x, start, mid, node * 2);
+    else
+        ret = find_and_delete(x - st[node * 2], mid + 1, end, node * 2 + 1);
 
     st[node] = st[node * 2] + st[node * 2 + 1];
 
@@ -76,34 +76,26 @@ void solve() {
     }
 
     vector<int> res;
-    int i = 0, left = 1, kk = k;
+    int i = 0, kk = 1;
+    k--;
     while (i != n) {
 
-        int tmp = get(left, n, 1, n, 1);
         //cout << "this " << tmp << "\n";
-        while (kk - tmp > 0) {
-            kk -= tmp;
-            left = 1;
-            tmp = get(left, n, 1, n, 1);
-        }
-        int t;
-        if (left != 1) t = find_and_delete(left, get(1, left, 1, n, 1) + kk, 1, n, 1);
-        else t = find_and_delete(left, kk, 1, n, 1);
+        kk = (kk+k) % (n - i) ? (kk + k) % (n - i) : n-i;
+        int t = find_and_delete(kk, 1, n, 1);
         //cout << left << " " << kk << " " << t << "\n";
-        left = t;
-        kk = k;
         res.push_back(t);
         i++;
     }
 
     cout << "<";
-    for (int i = 0; i < n-1; i++) {
+    for (int i = 0; i < n - 1; i++) {
         cout << res[i] << ", ";
     }
     cout << res[n - 1];
     cout << ">";
 
-    
+
 }
 
 int main() {
