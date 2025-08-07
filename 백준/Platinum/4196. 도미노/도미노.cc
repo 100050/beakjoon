@@ -108,28 +108,11 @@ void solve(int CASE = -1) {
     }
 
     // 위상 정렬
-    vector<int> arr;
-    queue<int> q;
     for (int i = 1; i <= n; i++) {
         if (ind2[i] == 0 && is[i]) {
-            q.push(i);
-            arr.push_back(i);
+            res++;
         }
     }
-    
-    while (q.size()) {
-        int f = q.front(); q.pop();
-        //cout << f << "\n";
-        for (int next : g2[f]) {
-            if (--ind2[next] == 0) q.push(next), arr.push_back(next);
-        }
-    }
-
-    vector<bool> visited(n + 1);
-
-    // 모든 정점 순회
-    for (int i = 0; i < arr.size(); i++)
-        if (!visited[arr[i]]) res++, dfs(arr[i], g2, visited);
 
     cout << res << "\n";
 }
