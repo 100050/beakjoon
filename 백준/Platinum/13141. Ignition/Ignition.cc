@@ -1,114 +1,58 @@
-#include <iostream>
-#include <vector>
-#include <array>
-#include <algorithm>
-#include <string>
-#include <cmath>
-#include <map>
-#include <set>
-#include <queue>
-#include <stack>
-#include <ranges>
-#include <numeric>
-#include <cstring>
+#include <bits/stdc++.h>
+
 using namespace std;
 
-using ll = long long;
-using ld = long double;
-using pii = pair<int, int>;
-using pil = pair<ll, ll>;
-using pid = pair<ld, ld>;
+typedef long long ll;
 
-const ll MOD = 1000000007;
-//const ll MOD = 10007;
-const ld PI = acos(-1.0L);
-int dx[4] = { -1, 0, 1, 0 };
-int dy[4] = { 0, -1, 0, 1 };
+const ll INF = 2e9;
 
-int n, m;
-vector<int> adj[201][201];
-// 정점을 방문한 시간 저장
-int when[201];
+int main(void) {
+  ios::sync_with_stdio(false);
+  cin.tie(NULL);
+  cout.tie(NULL);
 
-ld dijkstra(int start) {
-    // (시간, 정점)
-    using pidi = pair<ld, int>;
-    ld mx = 0;
-    priority_queue<pidi, vector<pidi>, greater<pidi>> pq;
+  int N, M;
+  cin >> N >> M;
+  ll ans = INF;
 
-    pq.push(make_pair(0, start));
-    while (pq.size()) {
-        pidi top = pq.top(); pq.pop();
-        
-        if (when[top.second] == -1) {
-            mx = max(mx, top.first);
-            when[top.second] = top.first;
-        }
-        else {
-            continue;
-        }
+  vector<vector<ll>> dist(N + 1, vector<ll>(N + 1, INF));
+  vector<ll> S(M + 1, 0);
+  vector<ll> E(M + 1, 0);
+  vector<ll> L(M + 1, 0);
 
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j < adj[top.second][i].size(); j++) {
-                int d = adj[top.second][i][j];
-                if (d == 0) continue;
+  for (int i = 1; i <= N; i++) {
+    dist[i][i] = 0;
+  }
 
-                if (top.second == i) {
-                    mx = max(mx, top.first + d / 2.0L);
-                    //if (start == 4) cout << top.second << " " << i << " " << top.first << " " << d << "\n";
-                    continue;
-                }
-                else if (when[i] != -1) {
-                    if (when[i] + d - top.first > 0) {
-                        mx = max(mx, (when[i] + d - top.first) / 2.0L + top.first);
-                    }
-                    continue;
-                }
-
-                pq.push(make_pair(top.first + d, i));
-            }
-            //if (start == 4) cout << top.second << " " << mx << "\n";
-        }
+  for (int i = 1; i <= M; i++) {
+    cin >> S[i] >> E[i] >> L[i];
+    
+    // 길이가 최소인 간선만 dist에 저장
+    dist[S[i]][E[i]] = min(dist[S[i]][E[i]], L[i]);
+    dist[E[i]][S[i]] = min(dist[E[i]][S[i]], L[i]);
+  }
+  
+    // 플로이드 워셜
+  for (int k = 1; k <= N; k++) {
+    for (int i = 1; i <= N; i++) {
+      for (int j = 1; j <= N; j++) {
+        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+      }
     }
-
-    return mx;
-}
-
-void solve(int CASE = -1) {
-
-    cin >> n >> m;
-    for (int i = 0; i < m; i++) {
-        int s, e, l;
-        cin >> s >> e >> l;
-        
-        adj[s][e].push_back(l);
-        adj[e][s].push_back(l);
+  }
+    
+    // i번 정점에서 불을 붙일 때 모든 간선이 다 타는 시각 구하기
+  for (int i = 1; i <= N; i++) {
+    ll sum = 0;
+    
+      // 모든 간선 중 가장 오래동안 다 타지 않는 간선이 타는 시각 구하기
+    for (int j = 1; j <= M; j++) {
+      sum = max(sum, dist[i][S[j]] + dist[i][E[j]] + L[j]);
     }
+    ans = min(ans, sum);
+  }
 
-    ld res = numeric_limits<ld>::max();
-    // 모든 정점을 다익스트라로 시도
-    for (int i = 1; i <= n; i++) {
-        for (int j = 1; j <= n; j++)
-            when[j] = -1;
+  cout << ans / 2 << "." << (ans % 2 ? 5 : 0);
 
-        res = min(res, dijkstra(i));
-    }
-
-    cout.precision(1);
-    cout << fixed;
-
-    cout << res << "\n";
-}
-
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL), cout.tie(NULL);
-
-    int t = 1;
-    //cin >> t;
-    for (int i = 1; i <= t; i++) {
-        solve(i);
-    }
-
-    return 0;
+  return 0;
 }
