@@ -1,0 +1,31 @@
+RightStar !E
+LeftStar E
+Right
+P = 0
+Y = RightStar E
+RightStar !E
+RightStar !E
+LeftStar E
+Right
+RightStar !W
+Pick
+Right
+RightStar !E
+Drop
+Right
+X = RightStar E
+X = X - Y
+Jump -12 if !X
+Pick
+Right
+RightStar !E
+Drop
+RightStar !E
+Left
+Z = LeftStar W
+X = Z
+Z = Z - P
+P = X
+Jump -23 if Z
+Right
+Stop
