@@ -29,31 +29,7 @@ const int dy[4] = { 0, -1, 0, 1 };
 
 int n, m;
 vector<int> adj[5000+1];
-
-bool f(int i, int j, int res[]) {
-    int num = 0, px = -1;
-    for (int x : adj[i]) {
-        for (int y : adj[x]) {
-            if (y == j) {
-                if (num == 0) {
-                    px = x;
-                    num++;
-                }
-                else if (num == 1) {
-                    res[0] = i;
-                    res[1] = px;
-                    res[2] = j;
-                    res[3] = x;
-                    return true;
-                }
-
-            }
-
-        }
-    }
-
-    return false;
-}
+int adjn[5001][5001];
 
 void solve(int CASE = -1) {
 
@@ -68,22 +44,31 @@ void solve(int CASE = -1) {
     // 모든 i, j 쌍에 대하여 이 둘과 직접적으로 연결된 정점이 2개가 있는지 확인
     int res[4] = { 0, };
     for (int i = 1; i <= n; i++) {
-        for (int j = i + 1; j <= n; j++) {
-            if (f(i, j, res)) {
-                i = n + 1;
-                j = n + 1;
+        for (int next : adj[i]) {
+            for (int nnext : adj[next]) {
+                if (i == nnext) continue;
+
+                if (adjn[i][nnext] == 0) {
+                    adjn[i][nnext] = next;
+                    adjn[nnext][i] = next;
+                }
+                else if (adjn[i][nnext] != next) {
+                    res[0] = i;
+                    res[1] = next;
+                    res[2] = nnext;
+                    res[3] = adjn[i][nnext];
+
+                    cout << "TAIP\n";
+                    for (int i = 0; i < 4; i++)
+                        cout << res[i] << " ";
+
+                    return;
+                }
             }
         }
     }
 
-    if (res[0] == 0) {
-        cout << "NE";
-    }
-    else {
-        cout << "TAIP\n";
-        for (int i = 0; i < 4; i++)
-            cout << res[i] << " ";
-    }
+    cout << "NE";
 }
 
 int main() {
