@@ -33,17 +33,13 @@ void solve(int CASE = -1) {
     cin >> n;
     int qs = (2 * n + 1) / 3;
     cout << qs << "\n";
-    int x = 1, y = n - qs + 1, tmp = 1;
+    int x = 1, y = n - qs + 1;
     for (int i = 0; i < qs; i++) {
         cout << y << " " << x << "\n";
-        if (x == y) {
-            tmp++;
-            y += 1;
-            x = tmp;
-        }
-        else {
-            x += 2;
-            y += 1;
+        x += 2;
+        y += 1;
+        if (x > y) {
+            x = 2;
         }
     }
     
