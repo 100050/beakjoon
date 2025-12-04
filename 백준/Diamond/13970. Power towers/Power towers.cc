@@ -29,15 +29,16 @@ const int dy[4] = { 0, -1, 0, 1 };
 
 ll power(ll a, ll b, bool& flag, ll mod = MOD) {
     ll res = 1;
+    bool flag2 = false;
     while (b) {
         if (b & 1) {
-            if (a * res >= mod) {
+            if (flag2 || a * res >= mod) {
                 flag = true;
             }
             res = (a * res) % mod;
         }
         if (a * a >= mod) {
-            flag = true;
+            flag2 = true;
         }
         a = (a * a) % mod;
         b >>= 1;
