@@ -39,7 +39,8 @@ int dfs(int left, int right, vector<pii>& arr) {
 
     ret = dfs(left - 1, right, arr);
     for (int i = right; i >= 0; i--) {
-        ret = max(ret, dfs(left - 1, i - 1, arr) + (abs(arr[left].first - arr[i].second) <= 4));
+        if (abs(arr[left].first - arr[i].second) <= 4)
+            ret = max(ret, dfs(left - 1, i - 1, arr) + 1);
     }
 
     return ret;
