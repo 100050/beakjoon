@@ -70,7 +70,7 @@ void solve(int CASE = -1) {
     }
     // a: 사이클 시작
     b = a;
-    unordered_set<int> s;
+    set<int> s;
     while (s.find(dp[b]) == s.end()) {
         s.insert(dp[b]);
 
