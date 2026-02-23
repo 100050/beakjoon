@@ -37,6 +37,7 @@ bool dfs(int v) {
     visited[v] = 1;
     for (int nxt : adj[v]) {
         if (visited[match[nxt]]) continue;
+        if (match[nxt] == v) continue;
         if (match[nxt] == 0 || dfs(match[nxt])) {
             match[nxt] = v;
 
