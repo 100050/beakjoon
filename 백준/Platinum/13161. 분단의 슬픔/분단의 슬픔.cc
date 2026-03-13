@@ -97,8 +97,11 @@ void solve(int CASE = -1) {
         for (int j = 0; j < n; j++) {
             int c;
             cin >> c;
-            if (i == j) continue;
-            if (c !=0) insert_edge(i + 1 + 2, j + 1 + 2, c);
+            if (i >= j) continue;
+            if (c !=0) {
+                insert_edge(i + 1 + 2, j + 1 + 2, c);
+                cap[j + 1 + 2][i + 1 + 2] = c;
+            }
         }
     }
 
