@@ -86,11 +86,11 @@ void solve(int CASE = -1) {
         int t;
         cin >> t;
         if (t == 1) {
-            insert_edge(1, i+1+2, INF<int>);
+            insert_edge(1, i+1+2, 1000*500);
             g[i+1+2] = 1;
         }
         else if (t == 2) {
-            insert_edge(i+1+2, 2, INF<int>);
+            insert_edge(i+1+2, 2, 1000*500);
         }
     }
     for (int i = 0; i < n; i++) {
@@ -98,7 +98,7 @@ void solve(int CASE = -1) {
             int c;
             cin >> c;
             if (i == j) continue;
-            insert_edge(i + 1 + 2, j + 1 + 2, c);
+            if (c !=0) insert_edge(i + 1 + 2, j + 1 + 2, c);
         }
     }
 
