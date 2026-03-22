@@ -2,7 +2,7 @@
 using namespace std;
 
 int dp[1001];
-vector<int> arr;
+vector<int> arr, parent;
 
 int dfs(int d) {
     int& ret = dp[d];
@@ -12,8 +12,10 @@ int dfs(int d) {
 
     ret = 1;
     for (int i = 0; i < d; i++) {
-        if (arr[d] > arr[i])
-            ret = max(ret, dfs(i) + 1);
+        if (arr[d] > arr[i] && ret < dfs(i) + 1) {
+            ret = dfs(i) + 1;
+            parent[d] = i;
+        }
     }
 
     return ret;
@@ -25,11 +27,12 @@ int main() {
 
     int n;
     cin >> n;
-    arr.resize(n);
+    arr.resize(n); parent.resize(n);
     for (int i = 0; i < n; i++) {
         cin >> arr[i];
     }
     fill(&dp[0], &dp[1000], -1);
+    fill(&parent[0], &parent[n], -1);
 
     int res = 0;
     for (int i = 0; i < n; i++) {
@@ -39,9 +42,13 @@ int main() {
     
     // 역추적
     vector<int> lis;
-    int t = res;
-    for (int i = n - 1; i >= 0; i--) {
-        if (t == dp[i]) lis.push_back(arr[i]), t--;
+    int i;
+    for (i = n - 1; i >= 0; i--) {
+        if (res == dp[i]) break;
+    }
+    while (i != -1) {
+        lis.push_back(arr[i]);
+        i = parent[i];
     }
     
     reverse(lis.begin(), lis.end());
