@@ -1,0 +1,37 @@
+#include<iostream>
+#include<algorithm>
+
+using namespace std;
+
+vector<int> graph[100001];
+int visited[100001] = { 0, };
+int total = 0;
+
+bool compare(int a, int b) {
+	return a < b;
+}
+
+void dfs(int r) {
+	if (visited[r] == 1) { // 방문 한 곳이면 return
+		return;
+	}
+	total++;
+	visited[r] = 1; // 방문하지 않았다면 방문했다고 표시
+
+	for (int i = 0; i < graph[r].size(); i++) {
+		dfs(graph[r][i]);
+	}
+}
+
+int main() {
+	int n, m, r;
+	scanf("%d\n%d", &n, &m);
+	for (int i = 1; i <= m; i++) {
+		int a, b;
+		scanf("%d %d", &a, &b);
+		graph[a].push_back(b); // (1,4) (1,2) (2,3) (2,4) (3,4)
+		graph[b].push_back(a); // (4,1) (2,1) (3,2) (4,2) (4,3)	
+	}
+	dfs(1);
+	cout << total - 1;
+}

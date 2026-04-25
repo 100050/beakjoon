@@ -1,0 +1,1 @@
+main(n){int c=0,f;scanf("%d",&n);f=n;do{n=(n%10)*10+(n%10+n/10)%10;c++;}while(n!=f);printf("%d",c);}
